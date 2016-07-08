@@ -3,7 +3,7 @@ var request = require('request');
 var args = process.argv;
 var command = process.argv[2];
 
-var movieName = "";
+
 
 //request will call the OMDB API
 
@@ -19,7 +19,9 @@ var movieName = "";
   //title, year, imdb rating, country, language, plot, actors, rotten tomatoes rating, RT URL
   //no movie provided default to 'Mr. Nobody'
   //RT rating and URL are now OPTIONAL
-if (command === "movie-this"){
+if (command === "movie-this" && args.length > 3){
+
+  var movieName = "";
 
   for (var i=3; i<args.length; i++){
     if (i>3 && i< args.length){
@@ -44,8 +46,8 @@ if (command === "movie-this"){
     }
   });
 }
-else {
-  var queryUrl = 'http://www.omdbapi.com/?t=mr.%20nobody&y=&plot=short&r=json';
+else if(command === "movie-this"){
+  var queryUrl = 'http://www.omdbapi.com/?t=Mr.%20Nobody&y=&plot=short&r=json';
 
   request(queryUrl, function (error, response, body) {
     if (!error && response.statusCode == 200) {
