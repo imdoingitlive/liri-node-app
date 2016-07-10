@@ -18,7 +18,6 @@ var command = process.argv[2];
 //creates var for the twitter keys
 var client = new twitter(keys.twitterKeys)
 
-//my-tweets will show last 20 tweets and when they were created 
 if (command === "my-tweets"){
   RunTwitter();
 }
