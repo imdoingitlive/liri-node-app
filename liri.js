@@ -1,15 +1,27 @@
 var keys = require('./keys.js');
 var request = require('request');
+var twitter = require('twitter');
+
 var args = process.argv;
 var command = process.argv[2];
 
-
+var client = new twitter(keys.twitterKeys)
 
 //request will call the OMDB API
 
 //take in argvs 'my-tweets', 'spotify-this-song', 'movie-this', 'do-what-it-says'
 
 //my-tweets will show last 20 tweets and when they were created 
+if (command === "my-tweets"){
+  
+  var params = {imdoingitlive: 'nodejs'}
+  
+  client.get('statuses/user_timeline', params, function(error, tweets, response){
+    if (!error){
+      console.log(tweets);
+    }
+  });
+}
 
 //spotify-this-song 'song name here' will show
   //artist, song name, preview link of the song, album, song name
