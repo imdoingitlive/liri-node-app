@@ -1,15 +1,19 @@
 var keys = require('./keys.js');
-var request = require('request');
-var twitter = require('twitter');
-
-var args = process.argv;
-var command = process.argv[2];
-
-var client = new twitter(keys.twitterKeys)
 
 //request will call the OMDB API
+var request = require('request');
+
+var twitter = require('twitter');
+
+var spotify = require('spotify');
+
+var args = process.argv;
 
 //take in argvs 'my-tweets', 'spotify-this-song', 'movie-this', 'do-what-it-says'
+var command = process.argv[2];
+
+//creates var for the twitter keys
+var client = new twitter(keys.twitterKeys)
 
 //my-tweets will show last 20 tweets and when they were created 
 if (command === "my-tweets"){
@@ -28,6 +32,43 @@ if (command === "my-tweets"){
 //spotify-this-song 'song name here' will show
   //artist, song name, preview link of the song, album, song name
   //no song provided default to 'what's my age again' by blink 182
+if (command === "spotify-this-song" && args.length > 3){
+
+  var songName = "";
+
+  for (var i=3; i<args.length; i++){
+    if (i>3 && i< args.length){
+      songName = songName + "+" + args[i];
+    }
+    else {
+      songName = songName + args[i];
+    }
+  }
+
+  spotify.search({type: 'track', query: songName}, function(error, data){
+    if (!error){
+      for (var i=0; i < 20; i++){
+        console.log("----------");
+        console.log("Artist: " + data.tracks.items[i].artists[0].name);
+        console.log("Song Name: " + data.tracks.items[i].name);
+        console.log("Preview URL: " + data.tracks.items[i].preview_url);
+        console.log("Album: " + data.tracks.items[i].album.name);
+      }
+    }
+  });
+}
+else if (command === "spotify-this-song"){
+  
+  spotify.search({type: 'track', query: "blink 182 what's my age again"}, function(error, data){
+      if (!error){
+          console.log("----------");
+          console.log("Artist: " + data.tracks.items[0].artists[0].name);
+          console.log("Song Name: " + data.tracks.items[0].name);
+          console.log("Preview URL: " + data.tracks.items[0].preview_url);
+          console.log("Album: " + data.tracks.items[0].album.name);
+      }
+    });
+}
 
 //movie-this 'movie name here' will show
   //title, year, imdb rating, country, language, plot, actors, rotten tomatoes rating, RT URL
