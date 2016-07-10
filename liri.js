@@ -18,7 +18,9 @@ if (command === "my-tweets"){
   
   client.get('statuses/user_timeline', params, function(error, tweets, response){
     if (!error){
-      console.log(tweets);
+      for (var i=0; i < 20; i++){
+        console.log("Tweet " + (i + 1) + ": " + tweets[i].text);
+      }
     }
   });
 }
